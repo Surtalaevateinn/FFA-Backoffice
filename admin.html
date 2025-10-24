@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FFA Platform - Admin Flow Prototype</title>
+<style>
+  body {
+    margin: 0; font-family: "Segoe UI", Roboto, sans-serif;
+    background: #f4f6fa; color: #333;
+  }
+  header {
+    background: #283e4a; color: #fff; padding: 12px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  header h1 { margin: 0; font-size: 20px; }
+  button, input, select, textarea {
+    font: inherit; padding: 6px 10px; margin: 4px 0;
+  }
+  .container {
+    padding: 20px;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: white; padding: 20px; border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer; transition: transform .15s;
+  }
+  .card:hover { transform: scale(1.03); }
+  .hidden { display: none; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { border-bottom: 1px solid #ccc; padding: 6px; text-align: left; }
+  .topbar { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .btn { background: #0078d4; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+  .btn:hover { background: #005fa3; }
+  h2 { margin-top: 0; }
+  .form { max-width: 400px; margin: 40px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+  .form input { width: 100%; margin: 6px 0; }
+  .link { color: #0078d4; cursor: pointer; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header" class="hidden">
+  <h1>Admin Dashboard</h1>
+  <button class="btn" onclick="showPage('login')">Logout</button>
+</header>
+
+<!-- LOGIN PAGE -->
+<div id="login" class="container">
+  <div class="form">
+    <h2>Admin Login</h2>
+    <input type="email" placeholder="Email"><br>
+    <input type="password" placeholder="Password"><br>
+    <button class="btn" onclick="showPage('dashboard')">Login</button>
+    <p><span class="link" onclick="showPage('forgot')">Forgot password?</span></p>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div id="forgot" class="container hidden">
+  <div class="form">
+    <h2>Forgot Password</h2>
+    <input type="email" placeholder="Registered Email"><br>
+    <button class="btn" onclick="showPage('reset')">Send Reset Link</button>
+    <p><span class="link" onclick="showPage('login')">Back to Login</span></p>
+  </div>
+</div>
+
+<!-- RESET PASSWORD -->
+<div id="reset" class="container hidden">
+  <div class="form">
+    <h2>Reset Password</h2>
+    <input type="password" placeholder="New Password"><br>
+    <input type="password" placeholder="Confirm Password"><br>
+    <button class="btn" onclick="showPage('login')">Update Password</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="container hidden">
+  <div class="card-grid">
+    <div class="card" onclick="showPage('projects')"><h3>Project Approval</h3><p>Approve or reject projects.</p></div>
+    <div class="card" onclick="showPage('users')"><h3>Users & Roles</h3><p>Manage Intervener accounts.</p></div>
+    <div class="card" onclick="showPage('dicts')"><h3>Dictionaries</h3><p>Manage countries, embassies, etc.</p></div>
+    <div class="card" onclick="showPage('announce')"><h3>Announcements</h3><p>Publish platform messages.</p></div>
+    <div class="card" onclick="showPage('logs')"><h3>Audit Logs</h3><p>Track admin actions.</p></div>
+    <div class="card" onclick="showPage('analytics')"><h3>Analytics</h3><p>View KPIs and reports.</p></div>
+  </div>
+</div>
+
+<!-- PROJECT APPROVAL -->
+<div id="projects" class="container hidden">
+  <div class="topbar">
+    <h2>Project Approval</h2>
+    <button class="btn" onclick="showPage('dashboard')">Back</button>
+  </div>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Status</th><th>Action</th></tr>
+    <tr><td>001</td><td>Community Solar</td><td>Pending</td>
+        <td><button class="btn" onclick="alert('Approved!')">Approve</button>
+        <button class="btn" style="background:#d9534f" onclick="alert('Rejected!')">Reject</button></td></tr>
+  </table>
+</div>
+
+<!-- USERS & ROLES -->
+<div id="users" class="container hidden">
+  <div class="topbar">
+    <h2>Users & Roles</h2>
+    <button class="btn" onclick="showPage('dashboard')">Back</button>
+  </div>
+  <input placeholder="Search Intervener...">
+  <table>
+    <tr><th>Name</th><th>Verified</th><th>Role</th><th>Action</th></tr>
+    <tr><td>Alice</td><td>No</td><td>Intervener</td><td><button class="btn">Verify</button></td></tr>
+    <tr><td>Bob</td><td>Yes</td><td>Reviewer</td><td><button class="btn">Disable</button></td></tr>
+  </table>
+</div>
+
+<!-- DICTIONARIES -->
+<div id="dicts" class="container hidden">
+  <div class="topbar">
+    <h2>Dictionaries</h2>
+    <button class="btn" onclick="showPage('dashboard')">Back</button>
+  </div>
+  <select>
+    <option>Country</option>
+    <option>Embassy</option>
+    <option>Department</option>
+    <option>City</option>
+    <option>Region</option>
+  </select>
+  <table>
+    <tr><th>Name</th><th>Status</th><th>Action</th></tr>
+    <tr><td>France</td><td>Active</td><td><button class="btn">Edit</button></td></tr>
+    <tr><td>Spain</td><td>Disabled</td><td><button class="btn">Enable</button></td></tr>
+  </table>
+</div>
+
+<!-- ANNOUNCEMENTS -->
+<div id="announce" class="container hidden">
+  <div class="topbar">
+    <h2>Announcements</h2>
+    <button class="btn" onclick="showPage('dashboard')">Back</button>
+  </div>
+  <select>
+    <option>General</option>
+    <option>Maintenance</option>
+    <option>News</option>
+  </select>
+  <textarea rows="4" style="width:100%" placeholder="Write announcement..."></textarea><br>
+  <button class="btn">Publish</button>
+  <h3>History</h3>
+  <ul>
+    <li>Maintenance notice - disabled</li>
+    <li>Version 1.2 release - active</li>
+  </ul>
+</div>
+
+<!-- AUDIT LOGS -->
+<div id="logs" class="container hidden">
+  <div class="topbar">
+    <h2>Audit Logs</h2>
+    <button class="btn" onclick="showPage('dashboard')">Back</button>
+  </div>
+  <div>
+    <input placeholder="Actor">
+    <input placeholder="Entity">
+    <input type="date">
+    <button class="btn">Filter</button>
+  </div>
+  <table>
+    <tr><th>Actor</th><th>Entity</th><th>Date</th><th>Action</th></tr>
+    <tr><td>Alice</td><td>Project #12</td><td>2025-10-23</td><td>Approved</td></tr>
+  </table>
+  <button class="btn">Export CSV</button>
+</div>
+
+<!-- ANALYTICS -->
+<div id="analytics" class="container hidden">
+  <div class="topbar">
+    <h2>Analytics</h2>
+    <button class="btn" onclick="showPage('dashboard')">Back</button>
+  </div>
+  <h3>Key Performance Indicators</h3>
+  <ul>
+    <li>Projects Submitted: 120</li>
+    <li>Projects Approved: 87</li>
+    <li>Average Review Time: 2.5 days</li>
+  </ul>
+  <button class="btn">Download Report</button>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll("div.container").forEach(d=>d.classList.add("hidden"));
+    document.getElementById("header").classList.add("hidden");
+    const page=document.getElementById(id);
+    if(page){ page.classList.remove("hidden"); }
+    if(["dashboard","projects","users","dicts","announce","logs","analytics"].includes(id))
+      document.getElementById("header").classList.remove("hidden");
+    window.scrollTo(0,0);
+  }
+</script>
+
+</body>
+</html>
